@@ -1,0 +1,54 @@
+﻿<Window x:Class="Mentoria_STI3.View.Principal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mentoria_STI3.View"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Mentoria Dev" Height="768" Width="1024">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="#FF032228" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Mentoria" FontWeight="Bold" FontSize="20" Foreground="White"
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+            <Border Style="{StaticResource BorderMenu}"/>
+
+            <Button Grid.Row="1" Content="Produtos"
+                    Style="{StaticResource BtnMenu}"
+                    />
+
+            <Border Grid.Row="1" 
+                    Style="{StaticResource BorderMenu}"/>
+
+            <Button Grid.Row="2" Content="Clientes" 
+                    Style="{StaticResource BtnMenu}"
+                    />
+
+            <Border Grid.Row="2" 
+                    Style="{StaticResource BorderMenu}"/>
+            
+            <Button Grid.Row="3" Content="Pedidos" 
+                    Style="{StaticResource BtnMenu}"
+                    />
+
+            <Border Grid.Row="3" 
+                    Style="{StaticResource BorderMenu}"/>
+
+        </Grid>
+    </Grid>
+</Window>
