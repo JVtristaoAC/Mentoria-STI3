@@ -1,4 +1,4 @@
-﻿<Window x:Class="Mentoria_STI3.View.Principal"
+﻿<Window xmlns:UserControls="clr-namespace:Mentoria_STI3.View.UserControls"  x:Class="Mentoria_STI3.View.Principal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -50,5 +50,8 @@
                     Style="{StaticResource BorderMenu}"/>
 
         </Grid>
+
+        <UserControls:UcProdutos Grid.Column="1"/>
+
     </Grid>
 </Window>
