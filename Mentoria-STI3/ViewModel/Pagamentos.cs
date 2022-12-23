@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Mentoria_STI3.ViewModel
 {
-    public class ProdutoViewModel
+    public class Pagamentos
     {
-        public string Nome { get; set; }
-        public decimal Valor { get; set; }
+
     }
 }

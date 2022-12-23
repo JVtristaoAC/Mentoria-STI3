@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mentoria_STI3.View.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,37 @@ namespace Mentoria_STI3.View
         public Principal()
         {
             InitializeComponent();
+        }
+
+
+        private void BtnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            InicializarUc(sender);
+        }
+
+
+        private void InicializarUc(object sender)
+        {
+            if(sender is Button btn)
+            {
+                switch (btn.Name)
+                {
+                    case nameof(BtnProdutos):
+                        Conteudo.Content = new UcProdutos();
+                        break;
+
+                    case nameof(BtnClientes):
+                        Conteudo.Content = new UcClientes();
+                        break;
+
+                    case nameof(BtnPedidos):
+                       // Conteudo.Content = new UcPedidos();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

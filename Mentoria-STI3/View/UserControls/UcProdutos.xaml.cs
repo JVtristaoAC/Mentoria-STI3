@@ -1,4 +1,4 @@
-﻿using Mentoria_STI3.ViewModel;
+﻿using Mentoria_STI3.ViewModel.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
