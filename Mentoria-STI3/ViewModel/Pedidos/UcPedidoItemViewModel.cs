@@ -12,5 +12,6 @@ namespace Mentoria_STI3.ViewModel.Pedido
         public decimal Quantidade { get; set; }
         public decimal ValorUnit { get; set; }
         public decimal ValorTotalItem { get; set; }
+        public decimal ValorTotalPedido { get; set; }
     }
 }

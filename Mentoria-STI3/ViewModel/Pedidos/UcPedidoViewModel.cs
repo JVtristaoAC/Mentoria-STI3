@@ -1,4 +1,5 @@
 ﻿using Mentoria_STI3.ViewModel.Clientes;
+using Mentoria_STI3.ViewModel.Pagamentos;
 using Mentoria_STI3.ViewModel.Produtos;
 using System;
 using System.Collections.Generic;
@@ -13,31 +14,31 @@ namespace Mentoria_STI3.ViewModel.Pedido
     {
 
 
-        private ObservableCollection<ClienteViewModel> _listaCliente;
-        public ObservableCollection<ClienteViewModel> ListaCliente
+        private ObservableCollection<ClienteViewModel> _listaClientes;
+        public ObservableCollection<ClienteViewModel> ListaClientes
         {
-            get => _listaCliente;
+            get => _listaClientes;
             set
             {
-                _listaCliente = value;
-                OnPropertyChanged(nameof(ListaCliente));
+                _listaClientes = value;
+                OnPropertyChanged(nameof(ListaClientes));
             }
         }
 
-        private ObservableCollection<ProdutoViewModel> _listaProduto;
-        public ObservableCollection<ProdutoViewModel> ListaProduto
+        private ObservableCollection<ProdutoViewModel> _listaProdutos;
+        public ObservableCollection<ProdutoViewModel> ListaProdutos
         {
-            get => _listaProduto;
+            get => _listaProdutos;
             set
             {
-                _listaProduto = value;
-                OnPropertyChanged(nameof(ListaProduto));
+                _listaProdutos = value;
+                OnPropertyChanged(nameof(ListaProdutos));
             }
         }
        
 
-         private ObservableCollection<string> _listaPagamentos;
-        public ObservableCollection<string> ListaPagamentos
+         private ObservableCollection<PagamentoViewModel> _listaPagamentos;
+        public ObservableCollection<PagamentoViewModel> ListaPagamentos
         {
             get => _listaPagamentos;
             set
@@ -69,14 +70,16 @@ namespace Mentoria_STI3.ViewModel.Pedido
             }
         }
 
-        private decimal _valorTotal;
-        public decimal ValorTotal
+        
+
+        private decimal _valorTotalPedido;
+        public decimal ValorTotalPedido
         {
-            get => _valorTotal;
+            get => _valorTotalPedido;
             set
             {
-                _valorTotal = value;
-                OnPropertyChanged(nameof(ValorTotal));
+                _valorTotalPedido = value;
+                OnPropertyChanged(nameof(ValorTotalPedido));
             }
         }
 
