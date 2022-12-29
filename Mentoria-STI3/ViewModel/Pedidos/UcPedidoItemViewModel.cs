@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mentoria_STI3.ViewModel.Pedido
+namespace MentoriaSTI3.ViewModel.Pedido
 {
     public class UcPedidoItemViewModel
     {

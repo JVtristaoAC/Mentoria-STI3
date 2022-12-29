@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Mentoria_STI3
+namespace MentoriaSTI3
 {
     /// <summary>
     /// Interaction logic for App.xaml

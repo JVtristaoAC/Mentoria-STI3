@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MentoriaDevSTI3.Data.Entity
+namespace MentoriaSTI3.Data.Entity
 {
     public class ItemPedido
     {

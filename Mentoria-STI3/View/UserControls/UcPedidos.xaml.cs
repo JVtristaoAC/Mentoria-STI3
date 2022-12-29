@@ -1,7 +1,7 @@
-﻿using Mentoria_STI3.ViewModel.Clientes;
-using Mentoria_STI3.ViewModel.Pagamentos;
-using Mentoria_STI3.ViewModel.Pedido;
-using Mentoria_STI3.ViewModel.Produtos;
+﻿using MentoriaSTI3.ViewModel.Clientes;
+using MentoriaSTI3.ViewModel.Pagamentos;
+using MentoriaSTI3.ViewModel.Pedido;
+using MentoriaSTI3.ViewModel.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Mentoria_STI3.View.UserControls
+namespace MentoriaSTI3.View.UserControls
 {
     /// <summary>
     /// Interação lógica para UcPedido.xam

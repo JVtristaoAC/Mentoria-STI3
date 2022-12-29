@@ -1,9 +1,9 @@
-﻿using Mentoria_STI3.View.UserControls;
-using MentoriaDevSTI3.Data.Context;
+﻿using MentoriaSTI3.View.UserControls;
+using MentoriaSTI3.Data.Context;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Mentoria_STI3.View
+namespace MentoriaSTI3.View
 {
     /// <summary>
     /// Lógica interna para Principal.xaml
@@ -13,13 +13,16 @@ namespace Mentoria_STI3.View
         public Principal()
         {
             InitializeComponent();
-            //Teste();
+            //Apenas para Desenvolvimento (Lentidão)
+            AplicarMigracoes();
+
+
         }
 
-        public void Teste()
+        public void AplicarMigracoes()
         {
             using var context = new MentoriaDevSTI3Context();
-            context.Database.EnsureCreated();
+            context.AplicarMigracoes();
         }
         private void BtnMenu_Click(object sender, RoutedEventArgs e)
         {

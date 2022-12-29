@@ -1,6 +1,6 @@
-﻿using Mentoria_STI3.ViewModel.Clientes;
-using Mentoria_STI3.ViewModel.Pagamentos;
-using Mentoria_STI3.ViewModel.Produtos;
+﻿using MentoriaSTI3.ViewModel.Clientes;
+using MentoriaSTI3.ViewModel.Pagamentos;
+using MentoriaSTI3.ViewModel.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mentoria_STI3.ViewModel.Pedido
+namespace MentoriaSTI3.ViewModel.Pedido
 {
     public class UcPedidoViewModel : PropertyChange
     {

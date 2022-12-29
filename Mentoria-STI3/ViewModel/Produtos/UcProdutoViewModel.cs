@@ -1,4 +1,4 @@
-﻿using Mentoria_STI3.View.UserControls;
+﻿using MentoriaSTI3.View.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mentoria_STI3.ViewModel.Produtos
+namespace MentoriaSTI3.ViewModel.Produtos
 {
     public class UcProdutoViewModel : PropertyChange
     {
