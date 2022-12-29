@@ -1,3 +1,3 @@
 # Mentoria-STI3
-### Aula Assistida: Modulo 2 (Completo)
+### ⚠ Versão compátivel com .Net 6.0 -> 6.0.10
 
