@@ -1,23 +1,15 @@
-﻿using MentoriaSTI3.ViewModel.Clientes;
-using MentoriaSTI3.ViewModel.Pagamentos;
+﻿using Mentoria_STI3.Business;
+using Mentoria_STI3.ViewModel.Pedidos;
+using MentoriaSTI3.ViewModel.Clientes;
 using MentoriaSTI3.ViewModel.Pedido;
 using MentoriaSTI3.ViewModel.Produtos;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MentoriaSTI3.View.UserControls
 {
@@ -42,67 +34,61 @@ namespace MentoriaSTI3.View.UserControls
             }
         }
 
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
         private void BtnAdicionarItem_Click(object sender, RoutedEventArgs e)
         {
-
             if (!ValidarProduto())
                 return;
 
-            AdicionarItem();
-            LimparCampos();
+            AdicionarItem();        
         }
 
         private void BtnFinalizarPedido_Click(object sender, RoutedEventArgs e)
         {
-            LimparCampos();
+            FinalizarPedido();
         }
 
         private void InicializarOperacao()
         {
             DataContext = UcPedidoVM;
-            UcPedidoVM.ListaClientes = new ObservableCollection<ClienteViewModel>
-            {
-                new ClienteViewModel{ Nome = "Cliente 1"},
-                new ClienteViewModel{ Nome = "Cliente 2"}
-            };
-
-            UcPedidoVM.ListaProdutos = new ObservableCollection<ProdutoViewModel>
-            {
-                new ProdutoViewModel{ Nome = "Produto 1", Valor = 10},
-                new ProdutoViewModel{ Nome = "Produto 2", Valor = 20}
-            };
-
-            UcPedidoVM.ListaPagamentos = new ObservableCollection<PagamentoViewModel>
-            {
-                new PagamentoViewModel{ Nome = "Dinheiro"},
-                new PagamentoViewModel{ Nome = "Boleto"},
-                new PagamentoViewModel{ Nome = "Cartão de Crédito"},
-                new PagamentoViewModel{ Nome = "Cartão de Débito"},
-                new PagamentoViewModel{ Nome = "Pix"}
-            };
 
             UcPedidoVM.Quantidade = 1;
+
             UcPedidoVM.ItensAdicionados = new ObservableCollection<UcPedidoItemViewModel>();
+
+            UcPedidoVM.ListaClientes = new ObservableCollection<ClienteViewModel>(new ClienteBusiness().Listar());
+
+            UcPedidoVM.ListaProdutos = new ObservableCollection<ProdutoViewModel>(new ProdutoBusiness().Listar());
+
+            UcPedidoVM.ListaPagamentos = new ObservableCollection<string>{
+                "Dinheiro",
+                "Boleto",
+                "Cartão de Crédito",
+                "Cartão de Débito",
+                "Pix"
+            };                         
         }
 
         private void AdicionarItem()
-        {
-            
+        {      
                 var produtoSelecionado = CmbProduto.SelectedItem as ProdutoViewModel;
                 var itemVM = new UcPedidoItemViewModel
                 {
                     Nome = produtoSelecionado.Nome,
                     Quantidade = UcPedidoVM.Quantidade,
                     ValorUnit = UcPedidoVM.ValorUnit,
-                    ValorTotalItem = UcPedidoVM.Quantidade * UcPedidoVM.ValorUnit
+                    ValorTotalItem = UcPedidoVM.Quantidade * UcPedidoVM.ValorUnit,
+                    ProdutoId = produtoSelecionado.Id
+                    
 
                 };
                 UcPedidoVM.ItensAdicionados.Add(itemVM);
-                UcPedidoVM.ValorTotalPedido = UcPedidoVM.ItensAdicionados.Sum(i => i.ValorTotalItem);
-            
-           
-
-           
+            UcPedidoVM.ValorTotalPedido = UcPedidoVM.ItensAdicionados.Sum(i => i.ValorTotalItem); LimparCamposProduto();
         }
 
         private bool ValidarProduto()
@@ -113,21 +99,44 @@ namespace MentoriaSTI3.View.UserControls
                 return false;
             }
             return true;
-
         }
-        private void LimparCampos()
+       
+        private void FinalizarPedido()
+        {
+            var clienteSelecionado = CmbCliente.SelectedItem as ClienteViewModel;
+            var PagamentoSelecionado = CmbPagamento.SelectedItem as string;
+            var pedidoViewModel = new PedidoViewModel
+            {
+                ClienteId = clienteSelecionado.Id,
+                FormaPagamento = PagamentoSelecionado,
+                Valor = UcPedidoVM.ValorTotalPedido,
+                ItensPedido = UcPedidoVM.ItensAdicionados.Select(x => new ItensPedidoViewModel
+                {
+                    ProdutoId = x.ProdutoId,
+                    Quantidade = x.Quantidade,
+                    Valor = x.ValorTotalItem
+                }).ToList()
+                 
+            };
+            new PedidoBusiness().Adicionar(pedidoViewModel);
+            MessageBox.Show("Pedido Realizado com sucesso!", "Sucesso!", MessageBoxButton.OK, MessageBoxImage.Information);
+            LimparTodosCampos();
+        }
+
+        private void LimparCamposProduto()
         {
             UcPedidoVM.Quantidade = 1;
             CmbProduto.SelectedItem = null;
-            CmbCliente.SelectedItem = null;
-            CmbPagamento.SelectedItem = null;
-
+            UcPedidoVM.ValorUnit = 0;
         }
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void LimparTodosCampos()
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            UcPedidoVM.ItensAdicionados = new ObservableCollection<UcPedidoItemViewModel>();
+            UcPedidoVM.ValorTotalPedido = 0;
+            CmbCliente.SelectedItem = null;
+            CmbPagamento.SelectedItem = null;
+            LimparCamposProduto();
         }
     }
 }

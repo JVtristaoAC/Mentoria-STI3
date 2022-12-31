@@ -3,6 +3,7 @@ using System;
 using MentoriaSTI3.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentoriaSTI3.Data.Migrations
 {
     [DbContext(typeof(MentoriaDevSTI3Context))]
-    partial class MentoriaDevSTI3ContextModelSnapshot : ModelSnapshot
+    [Migration("20221230235132_InsertPagamentos")]
+    partial class InsertPagamentos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,26 @@ namespace MentoriaSTI3.Data.Migrations
                     b.ToTable("ItensPedidos");
                 });
 
+            modelBuilder.Entity("MentoriaSTI3.Data.Entity.Pagamento", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FormaPagamento")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<long>("PedidoId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PedidoId");
+
+                    b.ToTable("Pagamentos");
+                });
+
             modelBuilder.Entity("MentoriaSTI3.Data.Entity.Pedido", b =>
                 {
                     b.Property<long>("Id")
@@ -84,10 +106,6 @@ namespace MentoriaSTI3.Data.Migrations
 
                     b.Property<long>("ClienteId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("FormaPagamento")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(15,2)");
@@ -136,6 +154,17 @@ namespace MentoriaSTI3.Data.Migrations
                     b.Navigation("Produto");
                 });
 
+            modelBuilder.Entity("MentoriaSTI3.Data.Entity.Pagamento", b =>
+                {
+                    b.HasOne("MentoriaSTI3.Data.Entity.Pedido", "Pedido")
+                        .WithMany("FormaPagamento")
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pedido");
+                });
+
             modelBuilder.Entity("MentoriaSTI3.Data.Entity.Pedido", b =>
                 {
                     b.HasOne("MentoriaSTI3.Data.Entity.Cliente", "Cliente")
@@ -149,6 +178,8 @@ namespace MentoriaSTI3.Data.Migrations
 
             modelBuilder.Entity("MentoriaSTI3.Data.Entity.Pedido", b =>
                 {
+                    b.Navigation("FormaPagamento");
+
                     b.Navigation("ItensPedido");
                 });
 #pragma warning restore 612, 618

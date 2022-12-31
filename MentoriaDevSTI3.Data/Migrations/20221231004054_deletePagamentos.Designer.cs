@@ -3,6 +3,7 @@ using System;
 using MentoriaSTI3.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentoriaSTI3.Data.Migrations
 {
     [DbContext(typeof(MentoriaDevSTI3Context))]
-    partial class MentoriaDevSTI3ContextModelSnapshot : ModelSnapshot
+    [Migration("20221231004054_deletePagamentos")]
+    partial class deletePagamentos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

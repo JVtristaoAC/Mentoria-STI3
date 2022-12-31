@@ -36,7 +36,7 @@
 
                 <StackPanel Grid.Column="2">
                     <Label Content="Pagamento"/>
-                    <ComboBox  x:Name="CmbPagamento"  ItemsSource="{Binding ListaPagamentos}" DisplayMemberPath="Nome"/>
+                    <ComboBox x:Name="CmbPagamento"  ItemsSource="{Binding ListaPagamentos}" />
                 </StackPanel>
                 
                 

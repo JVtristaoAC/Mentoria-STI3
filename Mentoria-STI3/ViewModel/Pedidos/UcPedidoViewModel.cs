@@ -1,12 +1,6 @@
 ﻿using MentoriaSTI3.ViewModel.Clientes;
-using MentoriaSTI3.ViewModel.Pagamentos;
 using MentoriaSTI3.ViewModel.Produtos;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MentoriaSTI3.ViewModel.Pedido
 {
@@ -35,10 +29,9 @@ namespace MentoriaSTI3.ViewModel.Pedido
                 OnPropertyChanged(nameof(ListaProdutos));
             }
         }
-       
 
-         private ObservableCollection<PagamentoViewModel> _listaPagamentos;
-        public ObservableCollection<PagamentoViewModel> ListaPagamentos
+         private ObservableCollection<string> _listaPagamentos;
+        public ObservableCollection<string> ListaPagamentos
         {
             get => _listaPagamentos;
             set
@@ -48,8 +41,8 @@ namespace MentoriaSTI3.ViewModel.Pedido
             }
         }
 
-        private decimal _quantidade;
-        public decimal Quantidade
+        private int _quantidade;
+        public int Quantidade
         {
             get => _quantidade;
             set

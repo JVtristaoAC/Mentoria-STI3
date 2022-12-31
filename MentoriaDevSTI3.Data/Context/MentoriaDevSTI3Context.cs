@@ -33,7 +33,8 @@ namespace MentoriaSTI3.Data.Context
             modelBuilder.ApplyConfiguration(new ItemPedidoMapping());
             modelBuilder.ApplyConfiguration(new PedidoMapping());
             modelBuilder.ApplyConfiguration(new ProdutoMapping());
-
+            modelBuilder.ApplyConfiguration(new PedidoMapping());
+            
 
             base.OnModelCreating(modelBuilder);
         }
@@ -41,6 +42,7 @@ namespace MentoriaSTI3.Data.Context
         //Alternativa para o add-migration
         public void AplicarMigracoes()
         {
+            
             if (Database.GetPendingMigrations().Any())
             {
                 Database.Migrate();

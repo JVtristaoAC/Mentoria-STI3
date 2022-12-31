@@ -1,4 +1,5 @@
-﻿using MentoriaSTI3.ViewModel.Produtos;
+﻿using Mentoria_STI3.Business;
+using MentoriaSTI3.ViewModel.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,15 +32,8 @@ namespace MentoriaSTI3.View.UserControls
             InitializeComponent();
 
             DataContext = UcProdutoVM;
-            UcProdutoVM.ProdutosAdicionados = new ObservableCollection<ProdutoViewModel>();
-            //Exemplo de Adicionar produtos
-            //UcProdutoVM.ProdutosAdicionados = new ObservableCollection<ProdutoViewModel>
-            //{
-            //    new ProdutoViewModel {Nome = "Tênis", Valor = 70},
-            //    new ProdutoViewModel {Nome = "Camiseta", Valor = 40},
-            //    new ProdutoViewModel {Nome = "Shorts", Valor = 25}
-
-            //};
+            CarrregarRegistros();
+         
         }
 
         private void BtnAdcionar_Click(object sender, RoutedEventArgs e)
@@ -68,10 +62,11 @@ namespace MentoriaSTI3.View.UserControls
 
             PreencherCampos(produto);
         }
-
+     
         private void BtnRemover_Click(object sender, RoutedEventArgs e)
         {
-
+            var produto = (sender as Button).Tag as ProdutoViewModel;
+            RemoverProduto(produto.Id);
         }
 
         private void txt_Valor_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -82,33 +77,24 @@ namespace MentoriaSTI3.View.UserControls
 
         private void LimparCampos()
         {
+            UcProdutoVM.Id = 0;
             UcProdutoVM.Nome = "";
-            UcProdutoVM.Valor = 0;
+            UcProdutoVM.Valor = 0;    
             UcProdutoVM.Alteracao = false;
         }
 
         private void PreencherCampos(ProdutoViewModel produto)
         {
+            UcProdutoVM.Id = produto.Id;
             UcProdutoVM.Nome = produto.Nome;
             UcProdutoVM.Valor = produto.Valor;
             UcProdutoVM.Alteracao = true;
         }
 
-        private void AdicionarProduto()
+        private void CarrregarRegistros()
         {
-            var novoProduto = new ProdutoViewModel
-            {
-                Nome = UcProdutoVM.Nome,
-                Valor = UcProdutoVM.Valor
-            };
-            UcProdutoVM.ProdutosAdicionados.Add(novoProduto);
+            UcProdutoVM.ProdutosAdicionados = new ObservableCollection<ProdutoViewModel>(new ProdutoBusiness().Listar());
         }
-
-        private void AlterarProduto()
-        {
-            //Aula banco de dados
-        }
-
         private bool ValidarProduto()
         {
             if (string.IsNullOrEmpty(UcProdutoVM.Nome))
@@ -119,6 +105,43 @@ namespace MentoriaSTI3.View.UserControls
             return true;
 
         }
+        private void AdicionarProduto()
+        {
+            var novoProduto = new ProdutoViewModel
+            {
+                Nome = UcProdutoVM.Nome,
+                Valor = UcProdutoVM.Valor
+            };
+
+            new ProdutoBusiness().Adicionar(novoProduto);
+            CarrregarRegistros();
+        }
+
+        private void AlterarProduto()
+        {
+            var produtoAlteracao = new ProdutoViewModel
+            {
+                Id = UcProdutoVM.Id,
+                Nome = UcProdutoVM.Nome,
+                Valor = UcProdutoVM.Valor
+            };
+            new ProdutoBusiness().Alterar(produtoAlteracao);
+            CarrregarRegistros();
+        }
+
+        private void RemoverProduto(long id)
+        {
+            var resultado = MessageBox.Show("Deseja remover o Produto?", "Atenção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                new ProdutoBusiness().Remover(id);
+                CarrregarRegistros();
+                LimparCampos();
+            }
+        }
+
+       
 
        
     }

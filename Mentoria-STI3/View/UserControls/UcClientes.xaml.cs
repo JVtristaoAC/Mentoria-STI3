@@ -1,9 +1,12 @@
-﻿using MentoriaSTI3.ViewModel.Clientes;
-using MentoriaSTI3.ViewModel.Produtos;
+﻿using Mentoria_STI3.Business;
+using Mentoria_STI3.ViewModel.Clientes;
+using MentoriaSTI3.ViewModel.Clientes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -24,15 +27,16 @@ namespace MentoriaSTI3.View.UserControls
     /// </summary>
     public partial class UcClientes : UserControl
     {
-        private UcClienteViewModel UcClienteVm = new UcClienteViewModel();
+        private UcClienteViewModel UcClienteVM = new UcClienteViewModel();
 
         public UcClientes()
         {
             InitializeComponent();
 
-            DataContext = UcClienteVm;
-            UcClienteVm.ClientesAdicionados = new ObservableCollection<ClienteViewModel>();
-            UcClienteVm.DataNascimento = new DateTime(1990, 1, 1);
+            DataContext = UcClienteVM;
+            UcClienteVM.DataNascimento = new DateTime(1990, 1, 1);
+            CarrregarRegistros();
+           
         }
 
         private void BtnAdcionar_Click(object sender, RoutedEventArgs e)
@@ -41,9 +45,9 @@ namespace MentoriaSTI3.View.UserControls
                 return;
 
 
-            if (UcClienteVm.Alteracao)
+            if (UcClienteVM.Alteracao)
             {
-                AlterarProduto();
+                AlterarCliente();
             }
             else
             {
@@ -56,6 +60,7 @@ namespace MentoriaSTI3.View.UserControls
 
         }
 
+
         private void BtnAlterar_Click(object sender, RoutedEventArgs e)
         {
             var cliente = (sender as Button).Tag as ClienteViewModel;
@@ -65,49 +70,127 @@ namespace MentoriaSTI3.View.UserControls
 
         private void BtnRemover_Click(object sender, RoutedEventArgs e)
         {
+            var cliente = (sender as Button).Tag as ClienteViewModel;
+            RemoverCliente(cliente.Id);
+    
+        }
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void TxtCep_LostFocus(object sender, RoutedEventArgs e)
+        {
+            BuscarCep((sender as TextBox).Text);
+        }
+        private void BuscarCep(string cep)
+        {
+            //https://viacep.com.br/ws/01001000/json/
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri("https://viacep.com.br/")
+            };
 
+            var response = client.GetAsync($"ws/{cep}/json/").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var enderecoCompleto = response.Content.ReadAsStringAsync().Result;
+                var obj = JsonConvert.DeserializeObject<EnderecoViewModel>(enderecoCompleto);
+
+                if (obj.Erro)
+                {
+                    MessageBox.Show("O CEP não existe.", "Atenção!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimparEndereco();
+                }
+                else
+                {
+                    UcClienteVM.Endereco = $"{obj.Localidade} - {obj.Bairro}";
+                    UcClienteVM.Cidade = $"{obj.Localidade}/{obj.Uf}";
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("O CEP é inválido.", "Atenção!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                LimparEndereco();
+            }
+        }
+
+        private void LimparEndereco()
+        {
+            UcClienteVM.Endereco = "";
+            UcClienteVM.Cidade = "";
+            UcClienteVM.Cep = "";
+        }
+        private void CarrregarRegistros()
+        {
+            UcClienteVM.ClientesAdicionados = new ObservableCollection<ClienteViewModel>(new ClienteBusiness().Listar());
         }
         private void LimparCampos()
         {
-            UcClienteVm.Nome = "";
-            UcClienteVm.DataNascimento = new DateTime(1990, 1, 1);
-            UcClienteVm.Cep = 0;
-            UcClienteVm.Endereco = "";
-            UcClienteVm.Cidade = "";
-            UcClienteVm.Alteracao = false;
+            UcClienteVM.Id = 0;
+            UcClienteVM.Nome = "";
+            UcClienteVM.DataNascimento = new DateTime(1990, 1, 1);
+            UcClienteVM.Cep = "";
+            UcClienteVM.Endereco = "";
+            UcClienteVM.Cidade = "";
+            UcClienteVM.Alteracao = false;
         }
 
         private void PreencherCampos(ClienteViewModel cliente)
         {
-            UcClienteVm.Nome = cliente.Nome;
-            UcClienteVm.Cep = cliente.Cep;
-            UcClienteVm.Endereco = cliente.Endereco;
-            UcClienteVm.Cidade = cliente.Cidade;
-            UcClienteVm.DataNascimento = cliente.DataNascimento;
-            UcClienteVm.Alteracao = true;
+            UcClienteVM.Id = cliente.Id;
+            UcClienteVM.Nome = cliente.Nome;
+            UcClienteVM.Cep = cliente.Cep;
+            UcClienteVM.Endereco = cliente.Endereco;
+            UcClienteVM.Cidade = cliente.Cidade;
+            UcClienteVM.DataNascimento = cliente.DataNascimento;
+            UcClienteVM.Alteracao = true;
         }
 
         private void AdicionarCliente()
         {
             var novoCliente = new ClienteViewModel
             {
-                Nome = UcClienteVm.Nome,
-                Cep = UcClienteVm.Cep,                
-                Endereco = UcClienteVm.Endereco,
-                Cidade = UcClienteVm.Cidade,
-                DataNascimento = UcClienteVm.DataNascimento
+                Nome = UcClienteVM.Nome,
+                Cep = UcClienteVM.Cep,                
+                Endereco = UcClienteVM.Endereco,
+                Cidade = UcClienteVM.Cidade,
+                DataNascimento = UcClienteVM.DataNascimento
             };
-            UcClienteVm.ClientesAdicionados.Add(novoCliente);
+           
+            new ClienteBusiness().Adicionar(novoCliente);
+            CarrregarRegistros();
         }
 
-        private void AlterarProduto()
+        private void AlterarCliente()
         {
-            //Aula banco de dados
+            var clienteAlteracao = new ClienteViewModel
+            {
+                Id = UcClienteVM.Id,
+                Nome = UcClienteVM.Nome,
+                Cep = UcClienteVM.Cep,
+                Endereco = UcClienteVM.Endereco,
+                Cidade = UcClienteVM.Cidade,
+                DataNascimento = UcClienteVM.DataNascimento
+            };
+            new ClienteBusiness().Alterar(clienteAlteracao);
+            CarrregarRegistros();
         }
+        private void RemoverCliente(long id)
+        {
+            var resultado = MessageBox.Show("Deseja remover o Cliente?", "Atenção", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
+            if (resultado == MessageBoxResult.Yes)
+            {
+                new ClienteBusiness().Remover(id);
+                CarrregarRegistros();
+                LimparCampos();
+            }
+        }
         private bool ValidarCliente()
         {
-            if (string.IsNullOrEmpty(UcClienteVm.Nome))
+            if (string.IsNullOrEmpty(UcClienteVM.Nome))
             {
                 MessageBox.Show("O campo nome é obrigatório", "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
@@ -116,10 +199,8 @@ namespace MentoriaSTI3.View.UserControls
 
         }
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
+        
     }
+
+   
 }

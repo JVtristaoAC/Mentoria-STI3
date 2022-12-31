@@ -14,5 +14,7 @@ namespace MentoriaSTI3.Data.Entity
         public decimal Valor { get; set; }  
         public Cliente Cliente { get; set; }
         public List<ItemPedido> ItensPedido { get; set; }
+
+      
     }
 }

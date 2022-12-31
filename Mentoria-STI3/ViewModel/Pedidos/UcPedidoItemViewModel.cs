@@ -9,9 +9,10 @@ namespace MentoriaSTI3.ViewModel.Pedido
     public class UcPedidoItemViewModel
     {
         public string Nome { get; set; }
-        public decimal Quantidade { get; set; }
+        public int Quantidade { get; set; }
         public decimal ValorUnit { get; set; }
         public decimal ValorTotalItem { get; set; }
         public decimal ValorTotalPedido { get; set; }
+        public long ProdutoId { get; set; }
     }
 }

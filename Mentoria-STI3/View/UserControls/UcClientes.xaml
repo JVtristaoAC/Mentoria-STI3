@@ -54,7 +54,7 @@
 
                 <StackPanel>
                     <Label Content="Cep"/>
-                    <TextBox Text="{Binding Cep}" PreviewTextInput="TextBox_PreviewTextInput"/>
+                    <TextBox x:Name="TxtCep" LostFocus="TxtCep_LostFocus" Text="{Binding Cep}" PreviewTextInput="TextBox_PreviewTextInput"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2">

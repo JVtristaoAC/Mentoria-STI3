@@ -13,7 +13,7 @@ namespace MentoriaSTI3.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Cliente> builder)
         {
-          builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Nome).HasColumnType("varchar(255)").IsRequired();
             builder.Property(x => x.Cep).HasColumnType("char(8)").IsRequired();

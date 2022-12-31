@@ -9,6 +9,17 @@ namespace MentoriaSTI3.ViewModel.Clientes
 {
     public class UcClienteViewModel : PropertyChange
     {
+        private long _id;
+        public long Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+
         private string _nome;
         public string Nome
         {
@@ -31,8 +42,8 @@ namespace MentoriaSTI3.ViewModel.Clientes
             }
         }
 
-        private int _cep;
-        public int Cep
+        private string _cep;
+        public string Cep
         {
             get => _cep;
             set
